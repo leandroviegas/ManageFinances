@@ -1,0 +1,47 @@
+﻿.body {
+    background: #008080;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.error-text {
+    color: red;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+
+.signup-button {
+    background: white;
+    color: #008080;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 10px;
+    border: none;
+    padding: 8px 15px;
+}
+
+    .signup-button.button-teal {
+        background: #008080;
+        color: white;
+    }
+
+.signin-button {
+    background: white;
+    color: #008080;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 10px;
+    border: none;
+    padding: 8px 15px;
+}
+
+
+    .signin-button.button-teal {
+        background: #008080;
+        color: white;
+    }

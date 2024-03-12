@@ -1,0 +1,76 @@
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ManageFinances</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="~/ManageFinances.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <div class="body">
+        <header>
+            <nav class="navbar bg-dark">
+                <div class="container">
+                    <div>
+                        <a class="text-light py-2 text-decoration-none fs-3 fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                            ManageFinances
+                        </a>
+                    </div>
+
+                    <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
+                        @{
+                            if (!User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SignUp">
+                                        <button class="button-teal">
+                                            Sign Up
+                                        </button>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SignIn">
+                                        <button class="button-teal">
+                                            Sign in
+                                        </button>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-light fw-bold" asp-area="User" asp-controller="Home" asp-action="Index">
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="SetToken">
+                                        <button class="button-teal">
+                                            Sign Out
+                                        </button>
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="container flex-grow-1">
+            <main role="main" class="h-100">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

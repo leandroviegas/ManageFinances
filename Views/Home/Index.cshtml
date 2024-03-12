@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<div class="py-5 px-2 text-light header-landing">
+    <div>
+        <h1 class="display-4 mb-3">Manage your finances in a easy way</h1>
+        <p class="lead mb-3">With ManageFinances, handling your finances becomes easy. We offer you the following functionalities:</p>
+        <ul class="fs-6 mb-3">
+            <li><strong>Easy Management</strong>: Allow users to upload receipts and other financial documents quickly and easily.</li>
+            <li><strong>Efficient Organization</strong>: Create a structure to categorize expenses and revenues, enabling the creation of customized financial reports.</li>
+            <li><strong>Streamlining the Process</strong>: Digitize receipts or financial documents directly into the system, eliminating the need to deal with physical paperwork.</li>
+        </ul>
+        <hr />
+        @{
+            if (!User.Identity.IsAuthenticated)
+            {
+                <a asp-area="" asp-controller="Home" asp-action="SignUp">
+                    <button class="btn btn-light">
+                        Join us
+                    </button>
+                </a>
+            }
+        }
+    </div>
+    <div>
+    </div>
+</div>

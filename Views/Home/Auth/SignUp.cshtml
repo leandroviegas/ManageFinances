@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Sign Up";
+}
+
+<form onsubmit="HandleSignIn(event)">
+    <h1 class="fs-5 text-center font-bold text-secondary">Sign Up</h1>
+    <div class="messages pt-2"></div>
+    <div class="form-group my-3">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+        <div class="messages"></div>
+    </div>
+    <div class="form-group my-3">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group my-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        <div class="messages"></div>
+    </div>
+    <button type="submit" class="button-teal">
+        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true">
+        </span>
+        <span>
+            Sign Up
+        </span>
+    </button>
+</form>
+<hr />
+<div>
+    <p>
+        Already have an account?
+        <a asp-area="" asp-controller="Home" asp-action="SignIn">
+            Sign In
+        </a>
+    </p>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function HandleSignIn(event) {
+            event.preventDefault();
+            var formdata = new FormData(event.target);
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SignUp", "Auth")",
+                processData: false,
+                contentType: false,
+                data: formdata,
+                beforeSend: () => {
+                    event.target.getElementsByClassName("spinner-border")[0]?.classList?.remove("d-none");
+                    Array.from(event.target.getElementsByClassName("messages")).forEach(message => { message.innerHTML = "" });
+                },
+                error: (data) => {
+                    try {
+                        event.target.getElementsByClassName("messages")[0].innerHTML = `<div class="alert alert-danger py-1" role="alert">${data.responseJSON?.title || "Something went wrong."}</div>`;
+                        if (data.responseJSON?.errors?.length > 0) {
+                            for (const [key, errors] of Object?.entries(data.responseJSON.errors)) {
+                                $(`input[name=${key}]`)?.siblings(".messages").html(errors.map(error => `<span class="error-text" role="alert">${error}</span>`).join(""));
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                },
+                success: (data) => {
+                    window.location.href = `@Url.Action("setToken", "Auth")?access_token=${data.token}`;
+                },
+                complete: () => {
+                    event.target.getElementsByClassName("spinner-border")[0].classList.add("d-none");
+                }
+            });
+        }
+    </script>
+}

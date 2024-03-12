@@ -1,0 +1,15 @@
+.body {
+    background: #008080;
+}
+
+.header-landing h1 {
+    font-family: "Archivo", sans-serif;
+}
+
+.header-landing div:first-child {
+    max-width: 700px;
+}
+
+    .header-landing div:first-child ul li {
+        margin: 13px 0;
+    }

@@ -1,0 +1,75 @@
+﻿@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Sign In";
+}
+
+<form onsubmit="HandleSignIn(event)">
+    <h1 class="fs-5 text-center text-secondary">Sign In</h1>
+    <div class="messages pt-2"></div>
+    <div class="form-group my-3">
+        <label for="usernameOrEmail">Username or email address</label>
+        <input type="text" class="form-control" id="usernameOrEmail" name="usernameOrEmail" required aria-describedby="emailHelp" placeholder="Enter your username email">
+        <div class="messages"></div>
+    </div>
+    <div class="form-group my-3">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required placeholder="Password">
+        <div class="messages"></div>
+    </div>
+    <button type="submit" class="button-teal">
+        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true">
+        </span>
+        <span>
+            Sign In
+        </span>
+    </button>
+</form>
+<hr />
+<div>
+    <p>
+        Don't have an account?
+        <a asp-area="" asp-controller="Home" asp-action="SignUp">
+            Sign Up
+        </a>
+    </p>
+</div>
+
+
+@section Scripts {
+    <script>
+        function HandleSignIn(event) {
+            event.preventDefault();
+            var formdata = new FormData(event.target);
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SignIn", "Auth")",
+                processData: false,
+                contentType: false,
+                data: formdata,
+                beforeSend: () => {
+                    event.target.getElementsByClassName("spinner-border")[0]?.classList?.remove("d-none");
+                    Array.from(event.target.getElementsByClassName("messages")).forEach(message => { message.innerHTML = "" });
+                },
+                error: (data) => {
+                    try {
+                        event.target.getElementsByClassName("messages")[0].innerHTML = `<div class="alert alert-danger py-1" role="alert">${data.responseJSON?.title || "Something went wrong."}</div>`;
+                        if (data.responseJSON?.errors?.length > 0) {
+                            for (const [key, errors] of Object?.entries(data.responseJSON.errors)) {
+                                $(`input[name=${key}]`)?.siblings(".messages").html(errors.map(error => `<span class="error-text" role="alert">${error}</span>`).join(""));
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                    }
+                },
+                success: (data) => {
+                    window.location.href = `@Url.Action("setToken", "Auth")?access_token=${data.token}`;
+                },
+                complete: () => {
+                    event.target.getElementsByClassName("spinner-border")[0].classList.add("d-none");
+                }
+            });
+        }
+    </script>
+}
